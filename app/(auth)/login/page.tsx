@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Lock, Mail, Loader2, ArrowLeft, ShieldCheck, Waves } from "lucide-react";
+import { Sparkles, Lock, Mail, Loader2, ArrowLeft, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -45,8 +46,13 @@ export default function LoginPage() {
 
         <div className="rounded-3xl border border-sky-100 shadow-[0_20px_50px_rgba(0,194,255,0.1)] bg-white p-6 sm:p-8 space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-blue-600 flex items-center justify-center text-white mx-auto mb-3 shadow-lg shadow-sky-400/30">
-              <Waves className="w-7 h-7" />
+            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg shadow-sky-400/25 border border-sky-100 bg-white mx-auto mb-3 relative">
+              <Image
+                src="/logo.png"
+                alt="homecleaning_shoes Logo"
+                fill
+                className="object-cover scale-110"
+              />
             </div>
             <h2 className="text-2xl font-black tracking-tight text-slate-900">
               Portal Admin Workshop

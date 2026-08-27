@@ -17,9 +17,9 @@ export function Navbar() {
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-blue-500 flex items-center justify-center text-white shadow-md shadow-cyan-400/25 group-hover:scale-105 transition-transform">
               <Waves className="w-5 h-5" />
             </div>
-            <div className="flex items-baseline">
-              <span className="font-black text-slate-900 tracking-tighter text-2xl">SO</span>
-              <span className="font-black text-sky-500 tracking-tighter text-2xl">CLEAN</span>
+            <div className="flex items-baseline font-mono font-black text-xl tracking-tight">
+              <span className="text-slate-900">homecleaning</span>
+              <span className="text-sky-500">_shoes</span>
             </div>
           </Link>
         </div>

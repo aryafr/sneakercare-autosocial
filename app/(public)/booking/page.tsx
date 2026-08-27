@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ScribbleArrow, FloatingNote } from "@/components/shared/ScribbleArrow";
 
 export const metadata = {
-  title: "Booking Layanan | SO CLEAN",
+  title: "Booking Layanan | homecleaning_shoes",
   description: "Formulir pemesanan laundry dan restorasi sepatu online dengan kalkulasi harga transparan.",
 };
 

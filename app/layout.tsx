@@ -3,7 +3,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SneakerCare & AutoSocial | Professional Shoe Laundry & Portfolio Engine",
+  title: "homecleaning_shoes | Professional Shoe Laundry & Portfolio Engine",
   description:
     "Web platform terpadu untuk operasional jasa laundry sepatu: booking online, tracking resi real-time, dan otomasi publikasi Before/After ke Instagram.",
 };

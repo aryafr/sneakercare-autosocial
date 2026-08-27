@@ -11,9 +11,9 @@ export function Footer() {
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center text-white shadow-sm shadow-sky-400/20">
               <Waves className="w-4 h-4" />
             </div>
-            <div className="flex items-baseline">
-              <span className="font-black text-slate-900 tracking-tighter text-xl">SO</span>
-              <span className="font-black text-sky-500 tracking-tighter text-xl">CLEAN</span>
+            <div className="flex items-baseline font-mono font-black text-lg tracking-tight">
+              <span className="text-slate-900">homecleaning</span>
+              <span className="text-sky-500">_shoes</span>
             </div>
           </div>
           <p className="text-xs max-w-md text-slate-400 leading-relaxed">
@@ -68,7 +68,7 @@ export function Footer() {
       </div>
 
       <div className="container mt-8 pt-6 border-t border-slate-200/60 text-center text-[11px] text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span>© 2026 SO CLEAN SneakerCare & AutoSocial. 100% Zero-OPEX Serverless Edge Architecture.</span>
+        <span>© 2026 homecleaning_shoes. 100% Zero-OPEX Serverless Edge Architecture.</span>
         <div className="flex gap-4 font-medium">
           <Link href="/track" className="hover:text-sky-500 transition-colors">Lacak Resi</Link>
           <Link href="/login" className="hover:text-sky-500 transition-colors">Admin Portal</Link>

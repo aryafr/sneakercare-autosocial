@@ -46,21 +46,21 @@ export async function GET(req: NextRequest) {
       <rect x="0" y="0" width="1080" height="1080" fill="url(#overlayGrad)" />
 
       <!-- Top Header Brand Badge -->
-      <rect x="36" y="36" width="320" height="52" rx="26" fill="rgba(15, 23, 42, 0.85)" stroke="#38bdf8" stroke-width="1.5" />
-      <text x="196" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="900" text-anchor="middle" letter-spacing="1">SO CLEAN WORKSHOP</text>
+      <rect x="36" y="36" width="340" height="52" rx="26" fill="rgba(15, 23, 42, 0.85)" stroke="#38bdf8" stroke-width="1.5" />
+      <text x="206" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="17" font-weight="900" text-anchor="middle" letter-spacing="1">HOMECLEANING_SHOES</text>
 
       <!-- BEFORE Tag -->
-      <rect x="420" y="36" width="110" height="52" rx="12" fill="#ef4444" />
-      <text x="475" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="900" text-anchor="middle" letter-spacing="1">BEFORE</text>
+      <rect x="440" y="36" width="110" height="52" rx="12" fill="#ef4444" />
+      <text x="495" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="900" text-anchor="middle" letter-spacing="1">BEFORE</text>
 
       <!-- AFTER Tag -->
-      <rect x="550" y="36" width="110" height="52" rx="12" fill="#10b981" />
-      <text x="605" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="900" text-anchor="middle" letter-spacing="1">AFTER</text>
+      <rect x="570" y="36" width="110" height="52" rx="12" fill="#10b981" />
+      <text x="625" y="69" fill="#ffffff" font-family="system-ui, sans-serif" font-size="18" font-weight="900" text-anchor="middle" letter-spacing="1">AFTER</text>
 
       <!-- Footer Brand Watermark -->
       <rect x="36" y="964" width="1008" height="80" rx="20" fill="rgba(15, 23, 42, 0.9)" stroke="#1e293b" stroke-width="1" />
       <text x="64" y="1014" fill="#ffffff" font-family="system-ui, sans-serif" font-size="24" font-weight="900">${title}</text>
-      <text x="1016" y="1014" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="20" font-weight="800" text-anchor="end">@sneakercare.official</text>
+      <text x="1016" y="1014" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="20" font-weight="800" text-anchor="end">@homecleaning_shoes</text>
     </svg>
   `;
 

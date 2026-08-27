@@ -105,8 +105,8 @@ export function ThermalReceipt({ order, triggerLabel = "Cetak Struk Thermal" }: 
               >
                 {/* Workshop Header */}
                 <div className="text-center space-y-1 pb-2 border-b border-dashed border-slate-300">
-                  <div className="font-black text-base tracking-tighter">SO CLEAN WORKSHOP</div>
-                  <div className="text-[10px] text-slate-500">Premium Sneaker Care & Restoration</div>
+                  <div className="font-black text-base tracking-tight">HOMECLEANING_SHOES</div>
+                  <div className="text-[10px] text-slate-500">Premium Shoe Laundry & Restoration</div>
                   <div className="text-[9px] text-slate-400">Jl. Senopati Raya No. 45, Jakarta Selatan</div>
                   <div className="text-[9px] text-slate-400">WhatsApp: +62 812-3456-7890</div>
                 </div>

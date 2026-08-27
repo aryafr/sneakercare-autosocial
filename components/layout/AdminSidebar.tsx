@@ -60,9 +60,9 @@ export function AdminSidebar() {
             <Waves className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-baseline">
-              <span className="font-black text-slate-900 tracking-tighter text-base">SO</span>
-              <span className="font-black text-sky-500 tracking-tighter text-base">CLEAN</span>
+            <div className="flex items-baseline font-mono font-black text-sm tracking-tight">
+              <span className="text-slate-900">homecleaning</span>
+              <span className="text-sky-500">_shoes</span>
             </div>
             <p className="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider">WORKSHOP OS v1.0</p>
           </div>

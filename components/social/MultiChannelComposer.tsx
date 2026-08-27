@@ -67,7 +67,7 @@ export function MultiChannelComposer({ items, preselectedItemId }: MultiChannelC
 
   // Caption state
   const defaultCaption = selectedItem
-    ? `SNEAKERCARE RESTORATION REPORT\n\nSepatu ${selectedItem.shoeBrand} ${selectedItem.shoeModel} milik ${selectedItem.customerName} telah selesai menjalani treatment ${selectedItem.serviceName || "Deep Clean"} di Workshop SO CLEAN.\n\nBerikut dokumentasi perbandingan Before/After hasil pengerjaan tim teknisi kami. Dari noda membandel hingga kembali bersih dan terawat optimal.\n\nKonsultasi dan pemesanan layanan perawatan sepatu dapat diakses melalui website resmi kami.\n\n#sneakercare #shoelaundry #beforeandafter #sneakerrestoration #cucisepatu #cucisepatujakarta`
+    ? `HOMECLEANING_SHOES RESTORATION REPORT\n\nSepatu ${selectedItem.shoeBrand} ${selectedItem.shoeModel} milik ${selectedItem.customerName} telah selesai menjalani treatment ${selectedItem.serviceName || "Deep Clean"} di Workshop HOMECLEANING_SHOES.\n\nBerikut dokumentasi perbandingan Before/After hasil pengerjaan tim teknisi kami. Dari noda membandel hingga kembali bersih dan terawat optimal.\n\nKonsultasi dan pemesanan layanan perawatan sepatu dapat diakses melalui website resmi kami.\n\n#homecleaningshoes #shoelaundry #beforeandafter #sneakerrestoration #cucisepatu #cucisepatujakarta`
     : "";
 
   const [caption, setCaption] = useState(defaultCaption);
@@ -372,8 +372,8 @@ export function MultiChannelComposer({ items, preselectedItemId }: MultiChannelC
                 </div>
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">@sneakercare.official</div>
-                <div className="text-[10px] text-slate-400">SneakerCare Workshop ID</div>
+                <div className="text-xs font-bold text-slate-900">@homecleaning_shoes</div>
+                <div className="text-[10px] text-slate-400">HOMECLEANING_SHOES Workshop ID</div>
               </div>
             </div>
             <span className="text-[10px] font-mono text-sky-500 font-bold">{activePreviewTab}</span>
@@ -411,7 +411,7 @@ export function MultiChannelComposer({ items, preselectedItemId }: MultiChannelC
             <div className="text-xs font-bold text-slate-900">248 likes</div>
 
             <div className="text-xs leading-relaxed">
-              <span className="font-bold text-slate-900 mr-1.5">@sneakercare.official</span>
+              <span className="font-bold text-slate-900 mr-1.5">@homecleaning_shoes</span>
               <span className="whitespace-pre-line text-slate-600">{caption}</span>
             </div>
           </div>

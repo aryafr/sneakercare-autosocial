@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@sneakercare.local");
+  const [email, setEmail] = useState("admin@homecleaning_shoes.local");
   const [password, setPassword] = useState("admin123");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,7 +66,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@sneakercare.local"
+                  placeholder="admin@homecleaning_shoes.local"
                   className="pl-11 rounded-2xl border-slate-200 focus:border-sky-400 focus:ring-sky-400 h-11 text-xs font-medium"
                 />
               </div>
@@ -91,8 +91,8 @@ export default function LoginPage() {
               <div className="font-bold text-slate-900 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-sky-500" /> Akun Demo Bawaan:
               </div>
-              <div>Admin: <span className="font-mono font-bold text-sky-700">admin@sneakercare.local</span> (pass: admin123)</div>
-              <div>Operator: <span className="font-mono font-bold text-sky-700">operator@sneakercare.local</span> (pass: admin123)</div>
+              <div>Admin: <span className="font-mono font-bold text-sky-700">admin@homecleaning_shoes.local</span> (pass: admin123)</div>
+              <div>Operator: <span className="font-mono font-bold text-sky-700">operator@homecleaning_shoes.local</span> (pass: admin123)</div>
             </div>
 
             <Button
@@ -113,7 +113,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-[11px] text-slate-400">
-          © 2026 SO CLEAN SneakerCare. Zero-OPEX Edge Architecture.
+          © 2026 homecleaning_shoes. Zero-OPEX Edge Architecture.
         </p>
       </div>
     </div>

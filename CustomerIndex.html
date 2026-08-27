@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+  <base target="_top">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Shoe Clean - Professional Shoe Laundry</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    // Navigation Helper
+    function navigateTo(page) {
+      var url = "<?= ScriptApp.getService().getUrl() ?>";
+      if (!url || url.indexOf('script.google.com') === -1) {
+        // Fallback for dev mode or if URL is empty
+        var current = window.location.href;
+        var base = current.split('?')[0];
+        window.top.location.href = base + "?page=" + page;
+      } else {
+        window.open(url + "?page=" + page, "_top");
+      }
+    }
+
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { "primary": "#1c74e9", "background-light": "#f6f7f8", "background-dark": "#111821" },
+          fontFamily: { "display": ["Inter", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <?!= include('Styles') ?>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    .btn-check:focus+.btn,
+    .btn:focus {
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display">
+  <div id="app">
+    <!-- LANDING PAGE -->
+    <section id="landing" class="page active">
+      <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-white">
+        <div
+          class="w-full bg-white dark:bg-background-dark border-b border-solid border-[#f0f2f4] dark:border-[#2b333e]">
+          <div class="layout-container flex justify-center">
+            <div class="flex flex-col w-full max-w-[960px]">
+              <header class="flex items-center justify-between whitespace-nowrap px-4 py-3 sm:px-10">
+                <div class="flex items-center gap-4 text-[#111418] dark:text-white">
+                  <div class="size-8 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-3xl">local_laundry_service</span>
+                  </div>
+                  <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Shoe
+                    Clean</h2>
+                </div>
+                <div class="flex flex-1 justify-end gap-8">
+                  <div class="hidden md:flex items-center gap-9">
+                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors cursor-pointer"
+                      onclick="scrollToServices()">Services</a>
+                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors cursor-pointer"
+                      onclick="showPage('status')">Check Status</a>
+                    <a class="text-[#111418] dark:text-gray-200 text-sm font-medium leading-normal hover:text-primary transition-colors cursor-pointer"
+                      href="https://wa.me/6281234567890" target="_blank">Contact</a>
+                  </div>
+                  <button onclick="navigateTo('admin')"
+                    class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0f2f4] dark:bg-[#2b333e] text-[#111418] dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#e0e2e4] dark:hover:bg-[#3a4450] transition-colors border-0">
+                    <span class="truncate">Sign In</span>
+                  </button>
+                </div>
+              </header>
+            </div>
+          </div>
+        </div>
+
+        <div class="layout-container flex h-full grow flex-col">
+          <div class="flex flex-1 justify-center py-5 px-4 sm:px-40">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+              <div class="@container mb-12">
+                <div class="flex flex-col gap-6 py-10 @[480px]:gap-8 @[864px]:flex-row-reverse items-center">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl shadow-lg @[480px]:h-auto @[480px]:min-w-[400px] @[864px]:w-1/2"
+                    style="background-image: url('https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop');">
+                  </div>
+                  <div
+                    class="flex flex-col gap-6 @[480px]:min-w-[400px] @[480px]:gap-8 @[864px]:justify-center @[864px]:w-1/2">
+                    <div class="flex flex-col gap-4 text-left">
+                      <h1
+                        class="text-[#111418] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+                        Professional Shoe Cleaning &amp; Restoration</h1>
+                      <h2 class="text-[#637388] dark:text-gray-300 text-lg font-normal leading-normal">Revive your
+                        favorite pairs with our premium laundry service. We offer convenient door-to-door delivery.</h2>
+                    </div>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                      <button onclick="showPage('order')"
+                        class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary hover:bg-blue-600 transition-colors text-white text-base font-bold leading-normal tracking-[0.015em] border-0"><span
+                          class="truncate">Order Now</span></button>
+                      <button onclick="scrollToServices()"
+                        class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-transparent border border-[#dce0e5] dark:border-[#3e4856] text-[#111418] dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-[#1f2937] transition-colors"><span
+                          class="truncate">View Pricing</span></button>
+                    </div>
+                    <div class="flex gap-6 pt-2 border-t border-dashed border-[#dce0e5] dark:border-[#3e4856]">
+                      <div class="flex items-center gap-2"><span
+                          class="material-symbols-outlined text-primary text-[20px]">eco</span><span
+                          class="text-xs font-medium text-[#637388] dark:text-gray-400">Eco-Friendly</span></div>
+                      <div class="flex items-center gap-2"><span
+                          class="material-symbols-outlined text-primary text-[20px]">schedule</span><span
+                          class="text-xs font-medium text-[#637388] dark:text-gray-400">72hr Turnaround</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="services-section" class="flex flex-col gap-10 py-10 @container">
+                <div class="flex flex-col gap-6">
+                  <div class="flex flex-col gap-2 items-start">
+                    <h1
+                      class="text-[#111418] dark:text-white tracking-tight text-[32px] font-bold leading-tight @[480px]:text-4xl">
+                      Services Preview</h1>
+                    <p class="text-[#637388] dark:text-gray-400 text-base font-normal leading-normal max-w-[720px]">
+                      Choose the perfect treatment for your kicks. Quality guaranteed.</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div onclick="selectTreatment('Deep Clean')"
+                    class="group flex flex-1 gap-4 rounded-xl border border-[#dce0e5] dark:border-[#2b333e] bg-white dark:bg-[#1a222c] p-6 flex-col shadow-sm hover:shadow-md transition-all cursor-pointer">
+                    <div
+                      class="text-primary bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                      <span class="material-symbols-outlined text-[28px]">cleaning_services</span></div>
+                    <div class="flex flex-col gap-2">
+                      <div class="flex justify-between items-center">
+                        <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight">Deep Clean</h2><span
+                          class="text-primary font-bold bg-primary/10 px-2 py-1 rounded text-sm">Rp 50.000</span>
+                      </div>
+                      <p class="text-[#637388] dark:text-gray-400 text-sm font-normal leading-normal">Complete inside
+                        &amp; out scrub.</p>
+                    </div>
+                  </div>
+                  <div onclick="selectTreatment('Fast Clean')"
+                    class="group flex flex-1 gap-4 rounded-xl border border-[#dce0e5] dark:border-[#2b333e] bg-white dark:bg-[#1a222c] p-6 flex-col shadow-sm hover:shadow-md transition-all cursor-pointer">
+                    <div
+                      class="text-primary bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                      <span class="material-symbols-outlined text-[28px]">timer</span></div>
+                    <div class="flex flex-col gap-2">
+                      <div class="flex justify-between items-center">
+                        <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight">Fast Clean</h2><span
+                          class="text-primary font-bold bg-primary/10 px-2 py-1 rounded text-sm">Rp 35.000</span>
+                      </div>
+                      <p class="text-[#637388] dark:text-gray-400 text-sm font-normal leading-normal">Quick surface dirt
+                        removal.</p>
+                    </div>
+                  </div>
+                  <div onclick="selectTreatment('Repaint')"
+                    class="group flex flex-1 gap-4 rounded-xl border border-[#dce0e5] dark:border-[#2b333e] bg-white dark:bg-[#1a222c] p-6 flex-col shadow-sm hover:shadow-md transition-all cursor-pointer">
+                    <div
+                      class="text-primary bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                      <span class="material-symbols-outlined text-[28px]">construction</span></div>
+                    <div class="flex flex-col gap-2">
+                      <div class="flex justify-between items-center">
+                        <h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight">Restoration</h2><span
+                          class="text-primary font-bold bg-primary/10 px-2 py-1 rounded text-sm">Rp 100k+</span>
+                      </div>
+                      <p class="text-[#637388] dark:text-gray-400 text-sm font-normal leading-normal">Sole whitening &
+                        repair.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex justify-center mt-4">
+                  <button onclick="showPage('order')"
+                    class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-[#f0f2f4] dark:bg-[#2b333e] text-[#111418] dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#e0e2e4] dark:hover:bg-[#3a4450] transition-colors w-fit border-0"><span
+                      class="truncate">View All Services</span></button>
+                </div>
+              </div>
+
+              <footer
+                class="flex flex-col gap-6 py-10 text-center border-t border-[#f0f2f4] dark:border-[#2b333e] mt-10">
+                <div class="flex flex-wrap items-center justify-center gap-6 sm:justify-around text-decoration-none">
+                  <a class="text-[#637388] dark:text-gray-400 text-base font-normal leading-normal hover:text-primary transition-colors cursor-pointer text-decoration-none"
+                    onclick="showPage('status')">Check Status</a>
+                  <a class="text-[#637388] dark:text-gray-400 text-base font-normal leading-normal hover:text-primary transition-colors cursor-pointer text-decoration-none"
+                    onclick="navigateTo('admin')">Admin Login</a>
+                </div>
+                <p class="text-[#637388] dark:text-gray-500 text-sm font-normal leading-normal">© 2026 Shoe Clean. All
+                  rights reserved.</p>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDER FORM PAGE -->
+    <section id="order" class="page">
+      <div class="page-header d-flex justify-content-between align-items-center p-3 bg-white sticky-top border-bottom">
+        <button class="btn btn-light border-0" onclick="showPage('landing')"><i
+            class="bi bi-arrow-left fs-4"></i></button>
+        <h2 class="h5 m-0 fw-bold">Form Order Baru</h2>
+        <div style="width: 40px"></div>
+      </div>
+      <div class="container py-3">
+        <form id="orderForm" class="order-form">
+          <div class="card mb-3 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold fs-6 mb-3 text-primary"><i class="bi bi-person-fill me-2"></i>Data Customer</h5>
+              <div class="mb-3"><label class="form-label small text-muted fw-bold">NAMA LENGKAP</label><input
+                  type="text" class="form-control" id="namaCustomer" required></div>
+              <div><label class="form-label small text-muted fw-bold">NO. WHATSAPP</label>
+                <div class="input-group"><span class="input-group-text">+62</span><input type="tel" class="form-control"
+                    id="noWhatsapp" placeholder="8123456789" required></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-3 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold fs-6 mb-3 text-primary"><i class="bi bi-bag-fill me-2"></i>Detail Sepatu</h5>
+              <div class="mb-3"><label class="form-label small text-muted fw-bold">INFO SEPATU</label><textarea
+                  class="form-control" id="detailSepatu" rows="2" required></textarea></div>
+              <div><label class="form-label small text-muted fw-bold">KATEGORI</label><select class="form-select"
+                  id="kategori" required>
+                  <option value="">Pilih Kategori</option>
+                  <option value="Sneakers">Sneakers</option>
+                  <option value="Leather">Leather</option>
+                  <option value="Suede">Suede</option>
+                  <option value="Canvas">Canvas</option>
+                  <option value="Boots">Boots</option>
+                  <option value="Kids">Kids</option>
+                </select></div>
+            </div>
+          </div>
+
+          <div class="card mb-3 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold fs-6 mb-3 text-primary"><i class="bi bi-droplet-fill me-2"></i>Pilih Treatment</h5>
+              <div class="row g-2">
+                <div class="col-6"><label class="w-100"><input type="checkbox" name="treatment" value="Deep Clean"
+                      data-price="50000" class="btn-check"><span
+                      class="btn btn-outline-light text-dark border w-100 py-3 rounded-4"><i
+                        class="bi bi-stars fs-4 mb-1 text-primary d-block"></i><span class="fw-bold small">Deep
+                        Clean</span><br><small class="text-muted">Rp 50rb</small></span></label></div>
+                <div class="col-6"><label class="w-100"><input type="checkbox" name="treatment" value="Fast Clean"
+                      data-price="35000" class="btn-check"><span
+                      class="btn btn-outline-light text-dark border w-100 py-3 rounded-4"><i
+                        class="bi bi-lightning-fill fs-4 mb-1 text-warning d-block"></i><span class="fw-bold small">Fast
+                        Clean</span><br><small class="text-muted">Rp 35rb</small></span></label></div>
+                <div class="col-6"><label class="w-100"><input type="checkbox" name="treatment" value="Unyellowing"
+                      data-price="75000" class="btn-check"><span
+                      class="btn btn-outline-light text-dark border w-100 py-3 rounded-4"><i
+                        class="bi bi-brightness-high fs-4 mb-1 text-info d-block"></i><span
+                        class="fw-bold small">Unyellowing</span><br><small class="text-muted">Rp
+                        75rb</small></span></label></div>
+                <div class="col-6"><label class="w-100"><input type="checkbox" name="treatment" value="Repaint"
+                      data-price="100000" class="btn-check"><span
+                      class="btn btn-outline-light text-dark border w-100 py-3 rounded-4"><i
+                        class="bi bi-palette-fill fs-4 mb-1 text-danger d-block"></i><span
+                        class="fw-bold small">Repaint</span><br><small class="text-muted">Rp
+                        100rb</small></span></label></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-3 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+              <h5 class="fw-bold fs-6 mb-3 text-primary"><i class="bi bi-clock-fill me-2"></i>Jenis Pelayanan</h5>
+              <div class="d-flex gap-3"><label class="w-100"><input type="radio" name="pelayanan" value="Reguler"
+                    checked class="btn-check"><span
+                    class="btn btn-outline-light text-dark border w-100 py-3 rounded-4 ps-3"><i
+                      class="bi bi-calendar3 fs-5 mb-1 d-block text-primary"></i><span
+                      class="fw-bold">Reguler</span><br><span class="text-muted small">3-5
+                      hari</span></span></label><label class="w-100"><input type="radio" name="pelayanan"
+                    value="Express" class="btn-check"><span
+                    class="btn btn-outline-light text-dark border w-100 py-3 rounded-4 ps-3"><i
+                      class="bi bi-lightning-charge-fill fs-5 mb-1 d-block text-warning"></i><span
+                      class="fw-bold">Express</span><br><span class="text-muted small">1-2 hari</span></span></label>
+              </div>
+            </div>
+          </div>
+          <div style="height: 150px"></div>
+
+          <div class="fixed-bottom bg-white border-top shadow-lg p-3 rounded-top-4">
+            <div class="d-flex justify-content-between align-items-center mb-2"><span class="text-muted small">Total
+                Estimasi</span><span id="totalDisplay" class="fw-bold fs-4 text-primary">Rp 0</span></div>
+            <div class="d-flex gap-2 mb-2">
+              <div class="input-group input-group-sm bg-light rounded-3 p-1 flex-grow-1"><button type="button"
+                  class="btn btn-link text-dark p-0 px-2" onclick="changeQty(-1)"><i
+                    class="bi bi-dash-lg"></i></button><input type="text" id="jumlah" value="1"
+                  class="form-control border-0 bg-transparent text-center fw-bold p-0" readonly><button type="button"
+                  class="btn btn-link text-dark p-0 px-2" onclick="changeQty(1)"><i class="bi bi-plus-lg"></i></button>
+              </div>
+              <select class="form-select form-select-sm bg-light border-0 fw-bold flex-grow-1" id="metodeBayar">
+                <option value="Tunai">Tunai</option>
+                <option value="Transfer">Transfer</option>
+                <option value="E-wallet">E-wallet</option>
+              </select>
+              <div class="d-none"><span id="subtotalDisplay"></span><span id="expressFee"></span><input type="radio"
+                  name="statusBayar" value="Lunas" checked><textarea id="catatan"></textarea></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold submit-btn">Buat
+              Pesanan</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STATUS CHECK PAGE -->
+    <section id="status" class="page">
+      <div class="page-header d-flex align-items-center p-3 border-bottom bg-white sticky-top"><button
+          class="btn btn-light border-0 me-3" onclick="showPage('landing')"><i
+            class="bi bi-arrow-left fs-4"></i></button>
+        <h2 class="h5 m-0 fw-bold">Cek Status Order</h2>
+      </div>
+      <div class="container py-4">
+        <div class="input-group input-group-lg shadow-sm rounded-4 overflow-hidden mb-4"><span
+            class="input-group-text bg-white border-0 ps-4"><i class="bi bi-search text-muted"></i></span><input
+            type="text" class="form-control border-0 fs-6 py-3" id="searchTerm"
+            placeholder="ID Order atau No WA"><button class="btn btn-primary px-4 fw-bold"
+            onclick="checkStatus()">CEK</button></div>
+        <div id="statusResult"></div>
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4 p-3">
+          <div class="modal-body text-center"><i class="bi bi-check-circle-fill text-success"
+              style="font-size: 4rem;"></i>
+            <h4 class="fw-bold mb-1">Order Berhasil!</h4>
+            <p class="text-muted small mb-4">Silahkan kirim nota ke admin</p>
+            <div class="bg-light p-3 rounded-3 mb-4 text-start">
+              <div class="d-flex justify-content-between mb-2 pb-2 border-bottom"><span class="text-muted small">ID
+                  Order</span><span class="fw-bold" id="confirmOrderId">...</span></div>
+              <div class="d-flex justify-content-between"><span class="text-muted small">Total Tagihan</span><span
+                  class="fw-bold text-primary" id="confirmTotal">...</span></div>
+              <div class="text-end text-muted mt-1" style="font-size: 0.7rem">Est: <span id="confirmEstimate"></span>
+              </div>
+            </div>
+            <div class="d-grid gap-2"><button class="btn btn-success py-3 rounded-pill fw-bold"
+                onclick="sendWhatsApp()"><i class="bi bi-whatsapp me-2"></i>Kirim & Chat Admin</button><button
+                class="btn btn-outline-secondary py-2 rounded-pill small" onclick="checkMyStatus()">Cek Status
+                Order</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>function scrollToServices() { const el = document.getElementById('services-section'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }</script>
+  <?!= include('CustomerScript') ?>
+</body>
+
+</html>

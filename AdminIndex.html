@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        // Navigation Helper
+        function navigateTo(page) {
+            var url = "<?= ScriptApp.getService().getUrl() ?>";
+            if (!url || url.indexOf('script.google.com') === -1) {
+                var current = window.location.href;
+                var base = current.split('?')[0];
+                window.top.location.href = base + "?page=" + page;
+            } else {
+                window.open(url + "?page=" + page, "_top");
+            }
+        }
+
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#2463eb", "background-light": "#f8fafc", "background-dark": "#111621" },
+                    fontFamily: { "display": ["Inter"] },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <?!= include('Styles') ?>
+    <style>
+        .admin-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 2px;
+        }
+
+        .stats-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            height: 100%;
+        }
+
+        .stats-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 0.5rem 0;
+        }
+
+        .order-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .order-card.status-Antrian::before {
+            background: var(--primary);
+        }
+
+        .order-card.status-Proses::before {
+            background: var(--warning);
+        }
+
+        .order-card.status-Selesai::before {
+            background: var(--success);
+        }
+
+        .filter-scroll {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            scrollbar-width: none;
+        }
+
+        .filter-chip {
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: var(--white);
+            border: 1px solid var(--border);
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-chip.active {
+            background: var(--dark);
+            color: var(--white);
+            border-color: var(--dark);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        #login-view {
+            min-height: 100vh;
+        }
+
+        #main-app {
+            display: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .abstract-pattern {
+            background-image: radial-gradient(#2463eb 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark">
+
+    <!-- LOGIN VIEW -->
+    <div id="login-view" class="font-display min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div
+            class="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl">
+        </div>
+        <div
+            class="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl">
+        </div>
+        <div class="absolute inset-0 abstract-pattern pointer-events-none"></div>
+
+        <div class="relative w-full max-w-[480px] px-6 py-12">
+            <div
+                class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800">
+                <div class="pt-10 px-8 flex flex-col items-center">
+                    <div
+                        class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
+                        <span class="material-symbols-outlined text-white text-4xl">cleaning_services</span>
+                    </div>
+                    <div class="layout-content-container flex flex-col flex-1 w-full">
+                        <h1
+                            class="text-[#111318] dark:text-white tracking-tight text-[32px] font-bold leading-tight text-center pb-2">
+                            Admin Portal</h1>
+                        <p
+                            class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal text-center px-4">
+                            Please sign in to manage your business</p>
+                    </div>
+                </div>
+
+                <form id="loginForm" class="p-8 space-y-4">
+                    <div class="flex flex-col gap-1.5"><label class="flex flex-col min-w-40 flex-1">
+                            <p
+                                class="text-[#111318] dark:text-slate-200 text-sm font-semibold leading-normal pb-2 px-1">
+                                Username</p>
+                            <div class="flex w-full flex-1 items-stretch rounded-xl"><input id="username"
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111318] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbdee6] dark:border-slate-700 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-[#616e89] p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal transition-all"
+                                    placeholder="admin" type="text" required />
+                                <div
+                                    class="text-[#616e89] flex border border-[#dbdee6] dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center pr-[15px] rounded-r-xl border-l-0">
+                                    <span class="material-symbols-outlined">person</span></div>
+                            </div>
+                        </label></div>
+                    <div class="flex flex-col gap-1.5"><label class="flex flex-col min-w-40 flex-1">
+                            <p
+                                class="text-[#111318] dark:text-slate-200 text-sm font-semibold leading-normal pb-2 px-1">
+                                Password</p>
+                            <div class="flex w-full flex-1 items-stretch rounded-xl"><input id="password"
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#111318] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbdee6] dark:border-slate-700 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-[#616e89] p-[15px] rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal transition-all"
+                                    placeholder="••••••••" type="password" required />
+                                <div
+                                    class="text-[#616e89] flex border border-[#dbdee6] dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center pr-[15px] rounded-r-xl border-l-0">
+                                    <span class="material-symbols-outlined">lock</span></div>
+                            </div>
+                        </label></div>
+                    <div class="flex items-center justify-between px-1 py-2"><label
+                            class="flex items-center gap-2 cursor-pointer"><input
+                                class="rounded text-primary focus:ring-primary/30 border-slate-300"
+                                type="checkbox" /><span class="text-sm text-slate-600 dark:text-slate-400">Remember
+                                me</span></label><a class="text-sm font-semibold text-primary hover:underline"
+                            href="#">Forgot password?</a></div>
+                    <button type="submit"
+                        class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mt-4"><span>Sign
+                            In</span><span class="material-symbols-outlined text-[20px]">login</span></button>
+                </form>
+
+                <div class="px-8 pb-10 flex flex-col items-center gap-4">
+                    <div class="w-full h-px bg-slate-100 dark:bg-slate-800"></div>
+                    <!-- Updated Back Button to use navigateTo('customer') -->
+                    <a class="flex items-center gap-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm font-medium transition-colors cursor-pointer"
+                        onclick="navigateTo('customer'); return false;">
+                        <span class="material-symbols-outlined text-lg">arrow_back</span> Return to Customer Site
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="text-slate-400 dark:text-slate-500 text-xs font-medium tracking-widest uppercase">© 2026 Shoe
+                    Clean Management System</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (Bootstrap) -->
+    <div id="main-app" class="bg-light">
+        <section id="dashboard" class="page active">
+            <div class="page-header justify-content-between p-3 bg-white border-bottom shadow-sm">
+                <h2 class="brand-name fs-4 mb-0 fw-bold text-primary">Dashboard</h2>
+                <div class="date-badge text-muted small" id="currentDate"></div>
+            </div>
+            <div class="container pb-5 mb-5 pt-3">
+                <div class="row g-3 mb-4 animate-fade-in">
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <div class="stats-label"><i class="bi bi-box-seam me-1 text-primary"></i> Order Baru</div>
+                            <div class="stats-value" id="statOrderHariIni">0</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <div class="stats-label"><i class="bi bi-hourglass-split me-1 text-warning"></i> Proses
+                            </div>
+                            <div class="stats-value" id="statDalamProses">0</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <div class="stats-label"><i class="bi bi-check-circle me-1 text-success"></i> Selesai</div>
+                            <div class="stats-value" id="statSelesaiHariIni">0</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stats-card">
+                            <div class="stats-label"><i class="bi bi-wallet2 me-1 text-danger"></i> Revenue</div>
+                            <div class="stats-value fs-5" id="statRevenue">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="section-title fw-bold text-secondary mb-3">Order Terbaru</h5>
+                <div id="recentOrders" class="animate-slide-up delay-2">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="orders" class="page">
+            <div class="page-header p-3 bg-white border-bottom shadow-sm">
+                <h2 class="fs-4 mb-0 fw-bold">Manajemen Order</h2>
+            </div>
+            <div class="container pb-5 mb-5 pt-3">
+                <div class="filter-scroll"><button class="filter-chip active"
+                        onclick="filterOrders('Semua')">Semua</button><button class="filter-chip"
+                        onclick="filterOrders('Antrian')">Antrian</button><button class="filter-chip"
+                        onclick="filterOrders('Proses')">Proses</button><button class="filter-chip"
+                        onclick="filterOrders('Selesai')">Selesai</button></div>
+                <div id="orderList" class="order-list"></div>
+            </div>
+        </section>
+
+        <section id="reports" class="page">
+            <div class="page-header p-3 bg-white border-bottom shadow-sm">
+                <h2 class="fs-4 mb-0 fw-bold">Laporan Revenue</h2>
+            </div>
+            <div class="container pb-5 mb-5 pt-3">
+                <div class="alert alert-info">Fitur laporan revenue akan tersedia di update berikutnya.</div>
+            </div>
+        </section>
+
+        <div class="modal fade" id="orderDetailModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold" id="detailOrderId">SC-000</h5><button type="button"
+                            class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center mb-4">
+                            <h2 class="mb-0 fw-bold" id="detailTotal">Rp 0</h2><span
+                                class="badge bg-light text-dark border" id="detailPaymentStatus">Belum Lunas</span>
+                        </div>
+                        <div class="list-group list-group-flush mb-4 rounded-3 border">
+                            <div class="list-group-item"><small class="text-muted d-block">Customer</small>
+                                <div class="d-flex justify-content-between align-items-center"><span class="fw-medium"
+                                        id="detailCustomer">...</span><a href="#" id="waLink" target="_blank"
+                                        class="btn btn-sm btn-success rounded-pill"><i class="bi bi-whatsapp me-1"></i>
+                                        Chat</a></div>
+                            </div>
+                            <div class="list-group-item"><small class="text-muted d-block">Detail Sepatu</small><span
+                                    class="fw-medium" id="detailSepatu">...</span></div>
+                            <div class="list-group-item"><small class="text-muted d-block">Treatment</small><span
+                                    id="detailTreatment">...</span></div>
+                        </div>
+                        <div class="card bg-light border-0">
+                            <div class="card-body"><label class="form-label fw-bold">Update Status
+                                    Progress</label><select class="form-select mb-3" id="statusSelect">
+                                    <option value="Antrian">🔵 Antrian</option>
+                                    <option value="Proses">🟡 Proses Pengerjaan</option>
+                                    <option value="Selesai">🟢 Selesai (Siap Ambil)</option>
+                                    <option value="Sudah Diambil">⚫ Sudah Diambil</option>
+                                </select><button class="btn btn-primary w-100" onclick="updateStatus()">Simpan
+                                    Perubahan</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="admin-nav animate-slide-up">
+            <a href="#" class="nav-item active" onclick="showAdminPage('dashboard', this)"><i
+                    class="bi bi-grid-fill"></i><span>Home</span></a>
+            <a href="#" class="nav-item" onclick="showAdminPage('orders', this)"><i
+                    class="bi bi-clipboard-data-fill"></i><span>Order</span></a>
+            <a href="#" class="nav-item" onclick="showAdminPage('reports', this)"><i
+                    class="bi bi-bar-chart-fill"></i><span>Laporan</span></a>
+            <a href="#" class="nav-item" onclick="logout()"><i class="bi bi-box-arrow-right"></i><span>Keluar</span></a>
+        </nav>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <?!= include('AdminScript') ?>
+</body>
+
+</html>

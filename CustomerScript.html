@@ -1,0 +1,305 @@
+<script>
+    // State Management
+    const state = {
+        currentTreatment: [],
+        prices: {
+            'Deep Clean': 50000,
+            'Fast Clean': 35000,
+            'Unyellowing': 75000,
+            'Repaint': 100000,
+            'Leather Care': 60000,
+            'Suede Clean': 55000
+        },
+        qty: 1,
+        serviceType: 'Reguler',
+        successOrder: null
+    };
+
+    // DOM Elements
+    const form = document.getElementById('orderForm');
+    const totalDisplay = document.getElementById('totalDisplay');
+    const subtotalDisplay = document.getElementById('subtotalDisplay');
+    const expressFeeDisplay = document.getElementById('expressFee');
+    const qtyInput = document.getElementById('jumlah');
+
+    // Initialize
+    function init() {
+        updatePrice();
+        setupEventListeners();
+    }
+
+    // Navigation
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    // Event Listeners
+    function setupEventListeners() {
+        // Treatment checkboxes
+        document.querySelectorAll('input[name="treatment"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                updatePrice();
+            });
+        });
+
+        // Service type radio
+        document.querySelectorAll('input[name="pelayanan"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                state.serviceType = e.target.value;
+                const expressRow = document.querySelector('.express-fee');
+                if (state.serviceType === 'Express') {
+                    expressRow.style.display = 'flex';
+                } else {
+                    expressRow.style.display = 'none';
+                }
+                updatePrice();
+            });
+        });
+
+        // Form Submit
+        form.addEventListener('submit', handleFormSubmit);
+    }
+
+    // Quantity Logic
+    function changeQty(delta) {
+        let newQty = state.qty + delta;
+        if (newQty < 1) newQty = 1;
+        if (newQty > 10) newQty = 10;
+
+        state.qty = newQty;
+        qtyInput.value = newQty;
+        updatePrice();
+    }
+
+    // Price Calculation
+    function updatePrice() {
+        let baseTotal = 0;
+
+        // Sum selected treatments
+        document.querySelectorAll('input[name="treatment"]:checked').forEach(cb => {
+            baseTotal += parseInt(cb.dataset.price || 0);
+        });
+
+        if (baseTotal === 0) {
+            totalDisplay.textContent = 'Rp 0';
+            subtotalDisplay.textContent = 'Rp 0';
+            return;
+        }
+
+        // Multiply by quantity
+        let subtotal = baseTotal * state.qty;
+        subtotalDisplay.textContent = formatRupiah(subtotal);
+
+        // Calculate express fee
+        let expressFee = 0;
+        if (state.serviceType === 'Express') {
+            expressFee = subtotal * 0.5; // 50% surcharge
+        }
+        expressFeeDisplay.textContent = formatRupiah(expressFee);
+
+        // Final Total
+        let finalTotal = subtotal + expressFee;
+        totalDisplay.textContent = formatRupiah(finalTotal);
+
+        // Animate change
+        totalDisplay.classList.add('animate-pop');
+        setTimeout(() => totalDisplay.classList.remove('animate-pop'), 200);
+    }
+
+    // Helper: Format Rupiah
+    function formatRupiah(amount) {
+        return 'Rp ' + amount.toLocaleString('id-ID');
+    }
+
+    // Select Treatment from Landing Page
+    function selectTreatment(treatmentName) {
+        showPage('order');
+        // Reset form first
+        form.reset();
+        // Check the specific treatment
+        const checkbox = document.querySelector(`input[value="${treatmentName}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
+            updatePrice();
+        }
+    }
+
+    // Handle Form Submit
+    function handleFormSubmit(e) {
+        e.preventDefault();
+
+        const submitBtn = document.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+
+        // Validation: At least one treatment
+        const treatments = Array.from(document.querySelectorAll('input[name="treatment"]:checked')).map(cb => cb.value);
+        if (treatments.length === 0) {
+            alert('Mohon pilih minimal satu treatment');
+            return;
+        }
+
+        // Loading State
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+
+        // Prepare Data
+        const formData = {
+            namaCustomer: document.getElementById('namaCustomer').value,
+            noWhatsapp: document.getElementById('noWhatsapp').value,
+            detailSepatu: document.getElementById('detailSepatu').value,
+            kategori: document.getElementById('kategori').value,
+            treatment: treatments,
+            pelayanan: state.serviceType,
+            jumlah: state.qty,
+            hargaUnit: treatments.reduce((sum, t) => sum + state.prices[t], 0),
+            metodeBayar: document.getElementById('metodeBayar').value,
+            statusBayar: document.querySelector('input[name="statusBayar"]:checked').value,
+            catatan: document.getElementById('catatan').value
+        };
+
+        // Call Backend
+        google.script.run
+            .withSuccessHandler(onSuccess)
+            .withFailureHandler(onFailure)
+            .submitOrder(formData);
+
+        function onSuccess(response) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+
+            if (response.success) {
+                state.successOrder = {
+                    id: response.orderId,
+                    total: response.total,
+                    estimate: response.estimatedDate,
+                    customerName: formData.namaCustomer,
+                    phone: formData.noWhatsapp
+                };
+
+                // Update Modal Content
+                document.getElementById('confirmOrderId').textContent = response.orderId;
+                document.getElementById('confirmTotal').textContent = formatRupiah(response.total);
+                document.getElementById('confirmEstimate').textContent = response.estimatedDate;
+
+                // Show Modal
+                const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+
+                form.reset();
+                updatePrice();
+            } else {
+                alert('Gagal menyimpan order: ' + response.error);
+            }
+        }
+
+        function onFailure(error) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            alert('Terjadi kesalahan sistem: ' + error.message);
+        }
+    }
+
+    // Send WhatsApp
+    function sendWhatsApp() {
+        if (!state.successOrder) return;
+
+        const { id, total, customerName, phone } = state.successOrder;
+
+        let formattedPhone = phone.replace(/[^0-9]/g, '');
+        if (formattedPhone.startsWith('0')) {
+            formattedPhone = '62' + formattedPhone.slice(1);
+        }
+
+        const message = `Halo Kak ${customerName}, terima kasih sudah mempercayakan sepatu Anda di Shoe Clean!\n\n` +
+            `🔖 ID Order: *${id}*\n` +
+            `💰 Total: *${formatRupiah(total)}*\n\n` +
+            `Pesanan Anda sedang dalam antrian. Kami akan kabari jika sudah selesai.`;
+
+        const url = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    }
+
+    // Check Order Status
+    function checkStatus() {
+        const searchTerm = document.getElementById('searchTerm').value.trim();
+        if (!searchTerm) return;
+
+        const resultDiv = document.getElementById('statusResult');
+        resultDiv.innerHTML = '<div class="text-center py-4"><span class="spinner-border text-primary"></span></div>';
+
+        google.script.run
+            .withSuccessHandler(showStatusResult)
+            .withFailureHandler(err => {
+                resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+            })
+            .getOrderStatus(searchTerm);
+    }
+
+    function showStatusResult(response) {
+        const resultDiv = document.getElementById('statusResult');
+
+        if (!response.success) {
+            resultDiv.innerHTML = `
+      <div class="text-center py-4 text-muted">
+        <i class="bi bi-x-circle display-4 mb-2 text-danger"></i>
+        <p>${response.error}</p>
+      </div>`;
+            return;
+        }
+
+        const order = response.order;
+        let badgeColor = 'bg-secondary';
+        if (order.statusProgress === 'Proses') badgeColor = 'bg-warning text-dark';
+        if (order.statusProgress === 'Selesai') badgeColor = 'bg-success';
+        if (order.statusProgress === 'Antrian') badgeColor = 'bg-primary';
+
+        resultDiv.innerHTML = `
+    <div class="card shadow-sm border-0 animate-slide-up">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0 fw-bold">${order.id}</h5>
+          <span class="badge ${badgeColor} rounded-pill px-3">${order.statusProgress}</span>
+        </div>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <small class="text-muted d-block">Customer</small>
+            <span class="fw-medium">${order.namaCustomer}</span>
+          </div>
+          <div class="col-6 text-end">
+            <small class="text-muted d-block">Estimasi Selesai</small>
+            <span class="fw-medium text-primary">${order.estimasiSelesai}</span>
+          </div>
+          <div class="col-12 border-top pt-3">
+            <small class="text-muted d-block">Detail Sepatu</small>
+            <p class="mb-1">${order.detailSepatu}</p>
+            <span class="badge bg-light text-dark border">${order.treatment}</span>
+          </div>
+        </div>
+        
+        <a href="https://wa.me/6281234567890?text=Halo admin, saya mau tanya status order ${order.id}" 
+           class="btn btn-outline-success w-100" target="_blank">
+          <i class="bi bi-whatsapp me-2"></i>Hubungi Admin
+        </a>
+      </div>
+    </div>`;
+    }
+
+    // Redirect to check status from success modal
+    function checkMyStatus() {
+        const modalEl = document.getElementById('confirmModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+        showPage('status');
+        if (state.successOrder) {
+            document.getElementById('searchTerm').value = state.successOrder.id;
+            checkStatus();
+        }
+    }
+
+    // Run init
+    window.addEventListener('load', init);
+</script>

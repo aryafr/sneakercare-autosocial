@@ -51,6 +51,8 @@ export default function LoginPage() {
                 src="/logo.png"
                 alt="homecleaning_shoes Logo"
                 fill
+                unoptimized
+                priority
                 className="object-cover scale-110"
               />
             </div>

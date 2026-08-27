@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, Menu, X, ShieldCheck, ShoppingBag, MessageCircle, Waves } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -13,9 +14,14 @@ export function Navbar() {
       <div className="container flex h-20 items-center justify-between">
         {/* Brand Logo with Wave Splash */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2.5 font-black tracking-tight text-xl text-slate-900 group">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 via-cyan-400 to-blue-500 flex items-center justify-center text-white shadow-md shadow-cyan-400/25 group-hover:scale-105 transition-transform">
-              <Waves className="w-5 h-5" />
+          <Link href="/" className="flex items-center gap-3 font-black tracking-tight text-xl text-slate-900 group">
+            <div className="w-11 h-11 rounded-2xl overflow-hidden shadow-md shadow-sky-400/20 border border-sky-100 group-hover:scale-105 transition-transform bg-white relative">
+              <Image
+                src="/logo.png"
+                alt="homecleaning_shoes Logo"
+                fill
+                className="object-cover scale-110"
+              />
             </div>
             <div className="flex items-baseline font-mono font-black text-xl tracking-tight">
               <span className="text-slate-900">homecleaning</span>

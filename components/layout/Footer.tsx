@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkles, Instagram, MessageCircle, MapPin, Phone, Waves } from "lucide-react";
 
 export function Footer() {
@@ -7,9 +8,14 @@ export function Footer() {
     <footer className="border-t border-slate-100 bg-slate-50/80 py-12 text-slate-500">
       <div className="container grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-3 md:col-span-2">
-          <div className="flex items-center gap-2.5 font-black text-slate-900 text-lg">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 flex items-center justify-center text-white shadow-sm shadow-sky-400/20">
-              <Waves className="w-4 h-4" />
+          <div className="flex items-center gap-3 font-black text-slate-900 text-lg">
+            <div className="w-9 h-9 rounded-xl overflow-hidden shadow-sm shadow-sky-400/20 border border-sky-100 bg-white relative shrink-0">
+              <Image
+                src="/logo.png"
+                alt="homecleaning_shoes Logo"
+                fill
+                className="object-cover scale-110"
+              />
             </div>
             <div className="flex items-baseline font-mono font-black text-lg tracking-tight">
               <span className="text-slate-900">homecleaning</span>

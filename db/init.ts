@@ -1,7 +1,10 @@
 import { client } from "./index";
 
+let isInitialized = false;
+
 export async function initDb() {
-  // 1. Core Auth Tables
+  if (isInitialized) return;
+  try {
   await client.execute(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -369,4 +372,9 @@ export async function initDb() {
       ('tpl_unyellowing', 'Unyellowing Midsole Magic', 'Midsole kuning kembali putih seperti baru', 'MIDSOLE DE-OXIDATION COMPLETE!\n\nMidsole kuning karena oksidasi pada {brand} {model} berhasil dikembalikan ke warna putih aslinya tanpa merusak karet sol.', '#unyellowing #shoecare #sneakercleaning #shoerefresh', 'Unyellowing'),
       ('tpl_weekend_promo', 'Weekend Drop-Off Promo', 'Ajak sneakers kesayangan perawatan akhir pekan', 'WEEKEND SNEAKER SPA IS CALLING!\n\nSiapkan sneaker kesayanganmu untuk tampil segar di awal minggu. Drop langsung ke workshop kami di Senopati atau booking pickup delivery online sekarang.', '#shoelaundryjakarta #cucisepatusenopati #weekendvibes', 'Promotion');
   `);
+    isInitialized = true;
+  } catch (err) {
+    console.error("Database initialization error:", err);
+  }
 }
+

@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/db";
+import { initDb } from "@/db/init";
 import { orders, orderItems, services, type Order, type OrderItem } from "@/db/schema";
 import { generateTrackingCode } from "@/lib/utils";
 import { createOrderSchema, type CreateOrderInput } from "@/lib/validations";
@@ -12,6 +13,7 @@ import { revalidatePath } from "next/cache";
  */
 export async function getServices() {
   try {
+    await initDb();
     const list = await db.select().from(services).where(eq(services.isActive, true));
     return { success: true, data: list };
   } catch (err: any) {
@@ -25,6 +27,7 @@ export async function getServices() {
  */
 export async function createOrder(input: CreateOrderInput) {
   try {
+    await initDb();
     const validated = createOrderSchema.parse(input);
 
     const orderId = `ord_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -87,6 +90,7 @@ export async function createOrder(input: CreateOrderInput) {
  */
 export async function getOrderByTrackingCode(trackingCode: string) {
   try {
+    await initDb();
     if (!trackingCode) {
       return { success: false, error: "Kode tracking tidak valid" };
     }
@@ -135,6 +139,7 @@ export async function getOrderByTrackingCode(trackingCode: string) {
  */
 export async function getOrderById(id: string) {
   try {
+    await initDb();
     const [order] = await db.select().from(orders).where(eq(orders.id, id)).limit(1);
     if (!order) {
       return { success: false, error: "Pesanan tidak ditemukan." };
@@ -261,6 +266,7 @@ export async function updateItemImages(
  */
 export async function getAdminOrders(statusFilter?: string) {
   try {
+    await initDb();
     const whereClause =
       statusFilter && statusFilter !== "ALL"
         ? eq(orders.orderStatus, statusFilter as any)
@@ -296,6 +302,7 @@ export async function getAdminOrders(statusFilter?: string) {
  */
 export async function getDashboardMetrics() {
   try {
+    await initDb();
     const allOrders = await db.select().from(orders);
 
     let totalRevenue = 0;
@@ -363,6 +370,7 @@ export async function getDashboardMetrics() {
  */
 export async function getShowcasePairs() {
   try {
+    await initDb();
     const items = await db
       .select({
         id: orderItems.id,
@@ -393,6 +401,7 @@ export async function getShowcasePairs() {
  */
 export async function getRecentTrackingCodes() {
   try {
+    await initDb();
     const list = await db
       .select({
         trackingCode: orders.trackingCode,
@@ -409,6 +418,7 @@ export async function getRecentTrackingCodes() {
     return { success: false, data: [] };
   }
 }
+
 
 
 

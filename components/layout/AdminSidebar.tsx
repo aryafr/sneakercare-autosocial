@@ -14,6 +14,7 @@ import {
   ExternalLink,
   PlusCircle,
   Waves,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,11 @@ const NAV_ITEMS = [
     label: "Auto-Social Hub",
     href: "/admin/social",
     icon: Share2,
+  },
+  {
+    label: "Pengaturan & Integrasi",
+    href: "/admin/settings",
+    icon: Settings,
   },
 ];
 
